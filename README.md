@@ -1,2 +1,3 @@
-# imgs_to_pdf
+# Imgs To PDF
+
 Convert images to PDF
