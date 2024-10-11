@@ -2,8 +2,8 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 
-from objects.Converter import Converter
-from objects.Image import Image
+from Converter import Converter
+from Image import Image
 from typing import List
 
 # Modes: "System" (standard), "Dark", "Light"
@@ -21,17 +21,14 @@ class ConverterGUIApp(customtkinter.CTk):
 
         self.converter = Converter()
 
-        # configure window
         self.title("CustomTkinter complex_example.py")
         # self.geometry(f"{1100}x{580}")
-        self.geometry(f"{800}x{600}")
+        self.geometry(f"{850}x{600}")
 
-        # configure grid layout (4x4)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure((2, 3), weight=0)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
-        # create sidebar frame with widgets
         self.sidebar_frame = customtkinter.CTkFrame(
             self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
@@ -54,7 +51,6 @@ class ConverterGUIApp(customtkinter.CTk):
                                                                command=self.change_scaling_event)
         self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
-        # create main entry and button
         self.files_frame = customtkinter.CTkFrame(self)
         self.files_frame.grid(row=0, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
@@ -63,7 +59,6 @@ class ConverterGUIApp(customtkinter.CTk):
         self.chosen_files_entry.grid(row=1, column=0, columnspan=2, padx=(
             20, 0), pady=(20, 20), sticky="new")
 
-        # create main entry and button
         self.entry_frame = customtkinter.CTkFrame(self)
         self.entry_frame.grid(row=1, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
@@ -79,7 +74,6 @@ class ConverterGUIApp(customtkinter.CTk):
         self.main_button_1.grid(row=1, column=3, padx=(
             20, 20), pady=(20, 20), sticky="new")
 
-        # create main entry and button
         self.output_file_frame = customtkinter.CTkFrame(self)
         self.output_file_frame.grid(row=2, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
@@ -87,18 +81,12 @@ class ConverterGUIApp(customtkinter.CTk):
             self.output_file_frame, placeholder_text="Output file name")
         self.output_file_entry.grid(row=1, column=0, columnspan=2, padx=(
             20, 0), pady=(20, 20), sticky="ew")
-
         self.main_button_3 = customtkinter.CTkButton(
             text="Add output file",
             master=self.output_file_frame, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),
             command=self.add_output_file)
-        self.main_button_3.grid(row=2, column=3, padx=(
+        self.main_button_3.grid(row=1, column=3, padx=(
             20, 20), pady=(20, 20), sticky="new")
-
-        self.sidebar_button_1 = customtkinter.CTkButton(
-            self.entry_frame, command=self.convert, text="Convert")
-        self.sidebar_button_1.grid(
-            row=2, column=3, padx=20, pady=10, sticky="sew")
 
         self.radiobutton_frame = customtkinter.CTkFrame(self)
         self.radiobutton_frame.grid(row=1, column=2, padx=(
@@ -118,6 +106,14 @@ class ConverterGUIApp(customtkinter.CTk):
             master=self.radiobutton_frame, variable=self.orientation, value="landscape")
         self.radio_button_2.grid(
             row=2, column=2, pady=10, padx=20, sticky="n")
+
+        self.convert_frame = customtkinter.CTkFrame(self)
+        self.convert_frame.grid(row=2, column=2, padx=(
+            20, 20), pady=(20, 0), sticky="ew")
+        self.sidebar_button_1 = customtkinter.CTkButton(
+            self.convert_frame, command=self.convert, text="Convert")
+        self.sidebar_button_1.grid(
+            row=0, column=1, padx=20, pady=10, sticky="sew")
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)

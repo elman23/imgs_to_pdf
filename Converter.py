@@ -1,6 +1,6 @@
 from fpdf import FPDF
 from typing import List
-from objects.Image import Image
+from Image import Image
 
 
 class Converter:
