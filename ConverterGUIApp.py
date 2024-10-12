@@ -89,7 +89,7 @@ class ConverterGUIApp(customtkinter.CTk):
             text_color=("gray10", "#DCE4EE"),
             command=self.add_output_file)
         self.output_file_set_button.grid(row=1, column=3, padx=(
-            20, 20), pady=(20, 20), sticky="ne")
+            20, 20), pady=(20, 20), sticky="w")
 
     def create_file_entry_frame(self):
         self.file_entry_frame = customtkinter.CTkFrame(self)
@@ -98,14 +98,14 @@ class ConverterGUIApp(customtkinter.CTk):
         self.image_file_entry = customtkinter.CTkEntry(
             self.file_entry_frame, placeholder_text="Image file name")
         self.image_file_entry.grid(row=1, column=0, columnspan=2, padx=(
-            20, 0), pady=(20, 20), sticky="ew")
+            20, 0), pady=(20, 20), sticky="nsew")
         self.add_file_button = customtkinter.CTkButton(
             text="Add file",
             master=self.file_entry_frame,  # fg_color="transparent", border_width=2,
             text_color=("gray10", "#DCE4EE"),
             command=self.add_image)
         self.add_file_button.grid(row=1, column=3, padx=(
-            20, 20), pady=(20, 20), sticky="ne")
+            20, 20), pady=(20, 20), sticky="nsew")
 
     def create_output_file_recap_frame(self):
         self.output_file_recap_frame = customtkinter.CTkFrame(self)
