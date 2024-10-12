@@ -3,8 +3,8 @@ import tkinter.messagebox
 import customtkinter
 
 from Converter import Converter
-from Image import Image
-from typing import List
+
+from tkinter import filedialog as fd
 
 # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_appearance_mode("System")
@@ -100,12 +100,31 @@ class ConverterGUIApp(customtkinter.CTk):
         self.image_file_entry.grid(row=1, column=0, columnspan=2, padx=(
             20, 0), pady=(20, 20), sticky="nsew")
         self.add_file_button = customtkinter.CTkButton(
+            text="Choose file",
+            master=self.file_entry_frame,  # fg_color="transparent", border_width=2,
+            text_color=("gray10", "#DCE4EE"),
+            command=self.choose_file_dialog)
+        self.add_file_button.grid(row=2, column=3, padx=(
+            20, 20), pady=(20, 20), sticky="nsew")
+        self.add_file_button = customtkinter.CTkButton(
             text="Add file",
             master=self.file_entry_frame,  # fg_color="transparent", border_width=2,
             text_color=("gray10", "#DCE4EE"),
             command=self.add_image)
         self.add_file_button.grid(row=1, column=3, padx=(
             20, 20), pady=(20, 20), sticky="nsew")
+
+    def choose_file_dialog(self):
+        filetypes = (
+            ('JPEG', '*.jpeg'),
+            ('PNG', '*.png'),
+            ('All files', '*.*')
+        )
+        chosen_file = self.choose_file_dialog = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        self.add_image(chosen_file)
 
     def create_output_file_recap_frame(self):
         self.output_file_recap_frame = customtkinter.CTkFrame(self)
@@ -189,6 +208,13 @@ class ConverterGUIApp(customtkinter.CTk):
     def add_image(self) -> None:
         file_name = self.image_file_entry.get()
         self.image_file_entry.delete(0, len(file_name))
+        self.converter.add_img(file_name, orientation=self.orientation.get())
+        images = [(img.file_name, img.orientation)
+                  for img in self.converter.imgs]
+        self.chosen_files_entry.configure(text=self.format_text(images))
+        print(images)
+
+    def add_image(self, file_name) -> None:
         self.converter.add_img(file_name, orientation=self.orientation.get())
         images = [(img.file_name, img.orientation)
                   for img in self.converter.imgs]
