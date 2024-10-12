@@ -32,6 +32,8 @@ class ConverterGUIApp(customtkinter.CTk):
         # self.create_sidebar()
         self.create_title_frame()
 
+        self.create_appearance_frame()
+
         self.create_chosen_files_recap_frame()
 
         self.create_output_file_recap_frame()
@@ -159,6 +161,20 @@ class ConverterGUIApp(customtkinter.CTk):
         self.logo_label = customtkinter.CTkLabel(
             self.sidebar_frame, text="Convert Images To PDF", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+
+    def create_appearance_frame(self):
+        self.appearance_frame = customtkinter.CTkFrame(
+            self, width=140, corner_radius=0)
+        self.appearance_frame.grid(row=0, column=2, rowspan=4, sticky="nsew")
+        self.appearance_mode_label = customtkinter.CTkLabel(
+            self.appearance_frame, text="Appearance Mode:", anchor="w")
+        self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
+        self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.appearance_frame, values=["Light", "Dark", "System"],
+                                                                       command=self.change_appearance_mode_event)
+        self.appearance_mode_optionemenu.grid(
+            row=6, column=0, padx=20, pady=(10, 10))
+        self.scaling_label = customtkinter.CTkLabel(
+            self.appearance_frame, text="UI Scaling:", anchor="w")
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
