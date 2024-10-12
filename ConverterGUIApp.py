@@ -54,19 +54,32 @@ class ConverterGUIApp(customtkinter.CTk):
         self.files_frame = customtkinter.CTkFrame(self)
         self.files_frame.grid(row=0, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
+        self.chosen_files_title = customtkinter.CTkLabel(
+            self.files_frame, text="Chosen files", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.chosen_files_title.grid(row=0, column=0, padx=20, pady=(20, 10))
         self.chosen_files_entry = customtkinter.CTkLabel(
             self.files_frame, text="")
         self.chosen_files_entry.grid(row=1, column=0, columnspan=2, padx=(
             20, 0), pady=(20, 20), sticky="new")
 
+        self.output_file_recap_frame = customtkinter.CTkFrame(self)
+        self.output_file_recap_frame.grid(row=1, column=1, padx=(
+            20, 20), pady=(20, 0), sticky="ew")
+        self.out_file_title = customtkinter.CTkLabel(
+            self.output_file_recap_frame, text="Output file", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.out_file_title.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.output_file_label = customtkinter.CTkLabel(
+            self.output_file_recap_frame, text="")
+        self.output_file_label.grid(row=1, column=0, columnspan=2, padx=(
+            20, 0), pady=(20, 20), sticky="new")
+
         self.entry_frame = customtkinter.CTkFrame(self)
-        self.entry_frame.grid(row=1, column=1, padx=(
+        self.entry_frame.grid(row=2, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
         self.image_file_entry = customtkinter.CTkEntry(
             self.entry_frame, placeholder_text="Image file name")
         self.image_file_entry.grid(row=1, column=0, columnspan=2, padx=(
             20, 0), pady=(20, 20), sticky="ew")
-
         self.main_button_1 = customtkinter.CTkButton(
             text="Add file",
             master=self.entry_frame, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),
@@ -75,7 +88,7 @@ class ConverterGUIApp(customtkinter.CTk):
             20, 20), pady=(20, 20), sticky="new")
 
         self.output_file_frame = customtkinter.CTkFrame(self)
-        self.output_file_frame.grid(row=2, column=1, padx=(
+        self.output_file_frame.grid(row=3, column=1, padx=(
             20, 20), pady=(20, 0), sticky="ew")
         self.output_file_entry = customtkinter.CTkEntry(
             self.output_file_frame, placeholder_text="Output file name")
@@ -127,14 +140,26 @@ class ConverterGUIApp(customtkinter.CTk):
 
     def add_image(self) -> None:
         file_name = self.image_file_entry.get()
-        self.image_file_entry.delete(0)
+        self.image_file_entry.delete(0, len(file_name))
         self.converter.add_img(file_name, orientation=self.orientation.get())
         image_names = [img.file_name for img in self.converter.imgs]
+        self.chosen_files_entry.configure(text=self.format_text(image_names))
         print(image_names)
 
+    def format_text(self, image_names):
+        text = ""
+        for image_name in image_names:
+            if text == "":
+                text += image_name
+            else:
+                text += "\n" + image_name
+        return text
+
     def add_output_file(self) -> None:
-        self.converter.add_out_file(self.output_file_entry.get())
-        self.output_file_entry.delete(0)
+        output_file = self.output_file_entry.get()
+        self.converter.add_out_file(output_file)
+        self.output_file_label.configure(text=output_file)
+        self.output_file_entry.delete(0, len(output_file))
         print(self.converter.out_file)
 
     def convert(self) -> None:
