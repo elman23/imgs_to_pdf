@@ -23,7 +23,7 @@ class ConverterGUIApp(customtkinter.CTk):
 
         self.title("CustomTkinter complex_example.py")
         # self.geometry(f"{1100}x{580}")
-        self.geometry(f"{850}x{600}")
+        self.geometry(f"{850}x{800}")
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure((2, 3), weight=0)
@@ -90,6 +90,14 @@ class ConverterGUIApp(customtkinter.CTk):
             command=self.add_output_file)
         self.output_file_set_button.grid(row=1, column=3, padx=(
             20, 20), pady=(20, 20), sticky="w")
+        self.add_file_button = customtkinter.CTkButton(
+            text="Choose output directory",
+            # fg_color="transparent", border_width=2,
+            master=self.output_file_entry_frame,
+            text_color=("gray10", "#DCE4EE"),
+            command=self.choose_output_file_dialog)
+        self.add_file_button.grid(row=2, column=3, padx=(
+            20, 20), pady=(20, 20), sticky="nsew")
 
     def create_file_entry_frame(self):
         self.file_entry_frame = customtkinter.CTkFrame(self)
@@ -125,6 +133,12 @@ class ConverterGUIApp(customtkinter.CTk):
             initialdir='/',
             filetypes=filetypes)
         self.add_image(chosen_file)
+
+    def choose_output_file_dialog(self):
+        directory = fd.askdirectory(initialdir="/",
+                                    title="Select directory")
+        filename = directory + "/out.pdf"
+        self.add_output_file(filename)
 
     def create_output_file_recap_frame(self):
         self.output_file_recap_frame = customtkinter.CTkFrame(self)
@@ -236,6 +250,11 @@ class ConverterGUIApp(customtkinter.CTk):
         self.converter.add_out_file(output_file)
         self.output_file_label.configure(text=output_file)
         self.output_file_entry.delete(0, len(output_file))
+        print(self.converter.out_file)
+
+    def add_output_file(self, output_file) -> None:
+        self.converter.add_out_file(output_file)
+        self.output_file_label.configure(text=output_file)
         print(self.converter.out_file)
 
     def convert(self) -> None:
